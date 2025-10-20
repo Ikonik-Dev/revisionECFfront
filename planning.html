@@ -1,0 +1,1323 @@
+<!DOCTYPE html>
+<html lang="fr">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Planning de Révision ECF RNCP DWWM - JavaScript</title>
+    <style>
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+
+      body {
+        font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        min-height: 100vh;
+        padding: 20px;
+      }
+
+      .container {
+        max-width: 1400px;
+        margin: 0 auto;
+        background: white;
+        border-radius: 15px;
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+        overflow: hidden;
+      }
+
+      .header {
+        background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+        color: white;
+        padding: 2rem;
+        text-align: center;
+        position: relative;
+      }
+
+      .header h1 {
+        font-size: 2.2rem;
+        margin-bottom: 0.5rem;
+      }
+
+      .header p {
+        font-size: 1.1rem;
+        opacity: 0.9;
+      }
+
+      .back-to-exercises {
+        position: absolute;
+        top: 1rem;
+        left: 1rem;
+        background: rgba(255, 255, 255, 0.2);
+        color: white;
+        text-decoration: none;
+        padding: 0.8rem 1.2rem;
+        border-radius: 25px;
+        font-weight: 600;
+        transition: all 0.3s ease;
+        backdrop-filter: blur(10px);
+        border: 2px solid rgba(255, 255, 255, 0.3);
+      }
+
+      .back-to-exercises:hover {
+        background: rgba(255, 255, 255, 0.3);
+        transform: translateY(-2px);
+        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+      }
+
+      .legend {
+        display: flex;
+        justify-content: center;
+        gap: 2rem;
+        padding: 1rem;
+        background: #f8f9fa;
+        border-bottom: 1px solid #e9ecef;
+      }
+
+      .legend-item {
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+        font-weight: 600;
+      }
+
+      .legend-color {
+        width: 20px;
+        height: 20px;
+        border-radius: 4px;
+      }
+
+      .status-pending {
+        background: #f8f9fa;
+        border: 2px solid #dee2e6;
+      }
+      .status-current {
+        background: #28a745;
+      }
+      .status-delayed {
+        background: #dc3545;
+      }
+      .status-completed {
+        background: #17a2b8;
+      }
+
+      .planning-grid {
+        display: grid;
+        grid-template-columns: 150px repeat(5, 1fr);
+        gap: 1px;
+        background: #e9ecef;
+        margin: 1px;
+      }
+
+      .time-slot,
+      .day-header,
+      .task-cell {
+        background: white;
+        padding: 0.8rem;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        text-align: center;
+        min-height: 60px;
+      }
+
+      .day-header {
+        background: linear-gradient(135deg, #84fab0 0%, #8fd3f4 100%);
+        font-weight: bold;
+        color: #2c3e50;
+        font-size: 1.1rem;
+      }
+
+      .time-slot {
+        background: #343a40;
+        color: white;
+        font-weight: 600;
+        writing-mode: vertical-rl;
+        text-orientation: mixed;
+      }
+
+      .task-cell {
+        position: relative;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        flex-direction: column;
+        gap: 0.3rem;
+        padding: 0.5rem;
+      }
+
+      .task-cell:hover {
+        transform: scale(1.02);
+        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+      }
+
+      .task-title {
+        font-weight: 600;
+        font-size: 0.9rem;
+        margin-bottom: 0.2rem;
+        color: #2c3e50;
+      }
+
+      .task-level {
+        font-size: 0.7rem;
+        padding: 0.2rem 0.4rem;
+        border-radius: 10px;
+        font-weight: 600;
+      }
+
+      .level-debutant {
+        background: #d4edda;
+        color: #155724;
+      }
+      .level-intermediaire {
+        background: #fff3cd;
+        color: #856404;
+      }
+      .level-avance {
+        background: #f8d7da;
+        color: #721c24;
+      }
+
+      .task-checkbox {
+        position: absolute;
+        top: 5px;
+        right: 5px;
+        width: 20px;
+        height: 20px;
+        cursor: pointer;
+      }
+
+      .break-cell {
+        background: linear-gradient(135deg, #ffeaa7 0%, #fab1a0 100%);
+        color: #2c3e50;
+        font-weight: 600;
+      }
+
+      .progress-summary {
+        background: #f8f9fa;
+        padding: 2rem;
+        border-top: 1px solid #e9ecef;
+      }
+
+      .progress-stats {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+        gap: 1rem;
+        margin-bottom: 1rem;
+      }
+
+      .stat-card {
+        background: white;
+        padding: 1rem;
+        border-radius: 10px;
+        text-align: center;
+        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+      }
+
+      .stat-number {
+        font-size: 2rem;
+        font-weight: bold;
+        color: #667eea;
+      }
+
+      .stat-label {
+        color: #6c757d;
+        font-size: 0.9rem;
+      }
+
+      .progress-bar-container {
+        background: #e9ecef;
+        height: 20px;
+        border-radius: 10px;
+        overflow: hidden;
+        margin-top: 1rem;
+      }
+
+      .progress-bar {
+        height: 100%;
+        background: linear-gradient(90deg, #667eea, #764ba2);
+        width: 0%;
+        transition: width 0.5s ease;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: white;
+        font-weight: 600;
+        font-size: 0.8rem;
+      }
+
+      .current-time {
+        position: fixed;
+        top: 20px;
+        right: 20px;
+        background: rgba(255, 255, 255, 0.9);
+        padding: 0.5rem 1rem;
+        border-radius: 20px;
+        font-weight: 600;
+        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        z-index: 1000;
+      }
+
+      @media (max-width: 768px) {
+        .planning-grid {
+          grid-template-columns: 100px repeat(5, 1fr);
+          gap: 0.5px;
+        }
+
+        .task-cell {
+          padding: 0.3rem;
+          min-height: 50px;
+        }
+
+        .task-title {
+          font-size: 0.7rem;
+        }
+
+        .task-level {
+          font-size: 0.6rem;
+        }
+
+        .legend {
+          flex-direction: column;
+          gap: 0.5rem;
+        }
+
+        .back-to-exercises {
+          position: static !important;
+          display: block;
+          margin: 0 auto 1rem auto;
+          width: fit-content;
+          padding: 0.6rem 1rem;
+          font-size: 0.9rem;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="current-time" id="currentTime"></div>
+
+    <div class="container">
+      <div class="header">
+        <a href="index.html" class="back-to-exercises"
+          >📚 Retour aux Exercices</a
+        >
+        <h1>� Planning de Révision ECF RNCP DWWM</h1>
+        <p>JavaScript - Du 20 au 24 octobre 2025</p>
+      </div>
+
+      <div class="legend">
+        <div class="legend-item">
+          <div class="legend-color status-pending"></div>
+          <span>À faire</span>
+        </div>
+        <div class="legend-item">
+          <div class="legend-color status-current"></div>
+          <span>En cours</span>
+        </div>
+        <div class="legend-item">
+          <div class="legend-color status-delayed"></div>
+          <span>En retard</span>
+        </div>
+        <div class="legend-item">
+          <div class="legend-color status-completed"></div>
+          <span>Terminé</span>
+        </div>
+      </div>
+
+      <div class="planning-grid">
+        <!-- En-têtes des jours -->
+        <div class="time-slot"></div>
+        <div class="day-header">
+          Lundi 20 Oct<br />
+          <small>Bases & Variables</small>
+        </div>
+        <div class="day-header">
+          Mardi 21 Oct<br />
+          <small>Fonctions & Boucles</small>
+        </div>
+        <div class="day-header">
+          Mercredi 22 Oct<br />
+          <small>Conditions & Tableaux</small>
+        </div>
+        <div class="day-header">
+          Jeudi 23 Oct<br />
+          <small>Objets & Événements</small>
+        </div>
+        <div class="day-header">
+          Vendredi 24 Oct<br />
+          <small>DOM & Révisions</small>
+        </div>
+
+        <!-- 9h00 - 9h30 -->
+        <div class="time-slot">9h00-9h30</div>
+        <div
+          class="task-cell"
+          data-day="lundi"
+          data-time="09:00"
+          data-theme="variables"
+          data-level="debutant"
+        >
+          <input type="checkbox" class="task-checkbox" />
+          <div class="task-title">Variables & Types</div>
+          <div class="task-level level-debutant">Débutant</div>
+        </div>
+        <div
+          class="task-cell"
+          data-day="mardi"
+          data-time="09:00"
+          data-theme="fonctions"
+          data-level="debutant"
+        >
+          <input type="checkbox" class="task-checkbox" />
+          <div class="task-title">Fonctions Simples</div>
+          <div class="task-level level-debutant">Débutant</div>
+        </div>
+        <div
+          class="task-cell"
+          data-day="mercredi"
+          data-time="09:00"
+          data-theme="conditions"
+          data-level="debutant"
+        >
+          <input type="checkbox" class="task-checkbox" />
+          <div class="task-title">If/Else</div>
+          <div class="task-level level-debutant">Débutant</div>
+        </div>
+        <div
+          class="task-cell"
+          data-day="jeudi"
+          data-time="09:00"
+          data-theme="objets"
+          data-level="debutant"
+        >
+          <input type="checkbox" class="task-checkbox" />
+          <div class="task-title">Objets Simples</div>
+          <div class="task-level level-debutant">Débutant</div>
+        </div>
+        <div
+          class="task-cell"
+          data-day="vendredi"
+          data-time="09:00"
+          data-theme="dom"
+          data-level="debutant"
+        >
+          <input type="checkbox" class="task-checkbox" />
+          <div class="task-title">Sélection DOM</div>
+          <div class="task-level level-debutant">Débutant</div>
+        </div>
+
+        <!-- 9h30 - 10h00 -->
+        <div class="time-slot">9h30-10h00</div>
+        <div
+          class="task-cell"
+          data-day="lundi"
+          data-time="09:30"
+          data-theme="variables"
+          data-level="intermediaire"
+        >
+          <input type="checkbox" class="task-checkbox" />
+          <div class="task-title">Types Avancés</div>
+          <div class="task-level level-intermediaire">Intermédiaire</div>
+        </div>
+        <div
+          class="task-cell"
+          data-day="mardi"
+          data-time="09:30"
+          data-theme="fonctions"
+          data-level="intermediaire"
+        >
+          <input type="checkbox" class="task-checkbox" />
+          <div class="task-title">Paramètres</div>
+          <div class="task-level level-intermediaire">Intermédiaire</div>
+        </div>
+        <div
+          class="task-cell"
+          data-day="mercredi"
+          data-time="09:30"
+          data-theme="conditions"
+          data-level="intermediaire"
+        >
+          <input type="checkbox" class="task-checkbox" />
+          <div class="task-title">Switch Case</div>
+          <div class="task-level level-intermediaire">Intermédiaire</div>
+        </div>
+        <div
+          class="task-cell"
+          data-day="jeudi"
+          data-time="09:30"
+          data-theme="objets"
+          data-level="intermediaire"
+        >
+          <input type="checkbox" class="task-checkbox" />
+          <div class="task-title">Classes</div>
+          <div class="task-level level-intermediaire">Intermédiaire</div>
+        </div>
+        <div
+          class="task-cell"
+          data-day="vendredi"
+          data-time="09:30"
+          data-theme="dom"
+          data-level="intermediaire"
+        >
+          <input type="checkbox" class="task-checkbox" />
+          <div class="task-title">Création Éléments</div>
+          <div class="task-level level-intermediaire">Intermédiaire</div>
+        </div>
+
+        <!-- 10h00 - 10h30 -->
+        <div class="time-slot">10h00-10h30</div>
+        <div
+          class="task-cell"
+          data-day="lundi"
+          data-time="10:00"
+          data-theme="variables"
+          data-level="avance"
+        >
+          <input type="checkbox" class="task-checkbox" />
+          <div class="task-title">Conversion Types</div>
+          <div class="task-level level-avance">Avancé</div>
+        </div>
+        <div
+          class="task-cell"
+          data-day="mardi"
+          data-time="10:00"
+          data-theme="fonctions"
+          data-level="avance"
+        >
+          <input type="checkbox" class="task-checkbox" />
+          <div class="task-title">Fonctions Ordre Sup.</div>
+          <div class="task-level level-avance">Avancé</div>
+        </div>
+        <div
+          class="task-cell"
+          data-day="mercredi"
+          data-time="10:00"
+          data-theme="conditions"
+          data-level="avance"
+        >
+          <input type="checkbox" class="task-checkbox" />
+          <div class="task-title">Conditions Complexes</div>
+          <div class="task-level level-avance">Avancé</div>
+        </div>
+        <div
+          class="task-cell"
+          data-day="jeudi"
+          data-time="10:00"
+          data-theme="objets"
+          data-level="avance"
+        >
+          <input type="checkbox" class="task-checkbox" />
+          <div class="task-title">Héritage</div>
+          <div class="task-level level-avance">Avancé</div>
+        </div>
+        <div
+          class="task-cell"
+          data-day="vendredi"
+          data-time="10:00"
+          data-theme="dom"
+          data-level="avance"
+        >
+          <input type="checkbox" class="task-checkbox" />
+          <div class="task-title">Drag & Drop</div>
+          <div class="task-level level-avance">Avancé</div>
+        </div>
+
+        <!-- 10h30 - 11h00 -->
+        <div class="time-slot">10h30-11h00</div>
+        <div
+          class="task-cell"
+          data-day="lundi"
+          data-time="10:30"
+          data-theme="boucles"
+          data-level="debutant"
+        >
+          <input type="checkbox" class="task-checkbox" />
+          <div class="task-title">Boucle For</div>
+          <div class="task-level level-debutant">Débutant</div>
+        </div>
+        <div
+          class="task-cell"
+          data-day="mardi"
+          data-time="10:30"
+          data-theme="boucles"
+          data-level="intermediaire"
+        >
+          <input type="checkbox" class="task-checkbox" />
+          <div class="task-title">Boucle While</div>
+          <div class="task-level level-intermediaire">Intermédiaire</div>
+        </div>
+        <div
+          class="task-cell"
+          data-day="mercredi"
+          data-time="10:30"
+          data-theme="tableaux"
+          data-level="debutant"
+        >
+          <input type="checkbox" class="task-checkbox" />
+          <div class="task-title">Tableaux Base</div>
+          <div class="task-level level-debutant">Débutant</div>
+        </div>
+        <div
+          class="task-cell"
+          data-day="jeudi"
+          data-time="10:30"
+          data-theme="events"
+          data-level="debutant"
+        >
+          <input type="checkbox" class="task-checkbox" />
+          <div class="task-title">Événements Clic</div>
+          <div class="task-level level-debutant">Débutant</div>
+        </div>
+        <div
+          class="task-cell"
+          data-day="vendredi"
+          data-time="10:30"
+          data-theme="revision"
+          data-level="intermediaire"
+        >
+          <input type="checkbox" class="task-checkbox" />
+          <div class="task-title">Révision Générale</div>
+          <div class="task-level level-intermediaire">Révision</div>
+        </div>
+
+        <!-- 11h00 - 11h30 -->
+        <div class="time-slot">11h00-11h30</div>
+        <div
+          class="task-cell"
+          data-day="lundi"
+          data-time="11:00"
+          data-theme="boucles"
+          data-level="intermediaire"
+        >
+          <input type="checkbox" class="task-checkbox" />
+          <div class="task-title">Boucles Avancées</div>
+          <div class="task-level level-intermediaire">Intermédiaire</div>
+        </div>
+        <div
+          class="task-cell"
+          data-day="mardi"
+          data-time="11:00"
+          data-theme="boucles"
+          data-level="avance"
+        >
+          <input type="checkbox" class="task-checkbox" />
+          <div class="task-title">Boucles Imbriquées</div>
+          <div class="task-level level-avance">Avancé</div>
+        </div>
+        <div
+          class="task-cell"
+          data-day="mercredi"
+          data-time="11:00"
+          data-theme="tableaux"
+          data-level="intermediaire"
+        >
+          <input type="checkbox" class="task-checkbox" />
+          <div class="task-title">Méthodes Tableaux</div>
+          <div class="task-level level-intermediaire">Intermédiaire</div>
+        </div>
+        <div
+          class="task-cell"
+          data-day="jeudi"
+          data-time="11:00"
+          data-theme="events"
+          data-level="intermediaire"
+        >
+          <input type="checkbox" class="task-checkbox" />
+          <div class="task-title">Formulaires</div>
+          <div class="task-level level-intermediaire">Intermédiaire</div>
+        </div>
+        <div
+          class="task-cell"
+          data-day="vendredi"
+          data-time="11:00"
+          data-theme="revision"
+          data-level="avance"
+        >
+          <input type="checkbox" class="task-checkbox" />
+          <div class="task-title">Exercices Pratiques</div>
+          <div class="task-level level-avance">Pratique</div>
+        </div>
+
+        <!-- 11h30 - 12h00 -->
+        <div class="time-slot">11h30-12h00</div>
+        <div
+          class="task-cell"
+          data-day="lundi"
+          data-time="11:30"
+          data-theme="pratique"
+          data-level="intermediaire"
+        >
+          <input type="checkbox" class="task-checkbox" />
+          <div class="task-title">Exercices Pratiques</div>
+          <div class="task-level level-intermediaire">Pratique</div>
+        </div>
+        <div
+          class="task-cell"
+          data-day="mardi"
+          data-time="11:30"
+          data-theme="pratique"
+          data-level="intermediaire"
+        >
+          <input type="checkbox" class="task-checkbox" />
+          <div class="task-title">Exercices Pratiques</div>
+          <div class="task-level level-intermediaire">Pratique</div>
+        </div>
+        <div
+          class="task-cell"
+          data-day="mercredi"
+          data-time="11:30"
+          data-theme="tableaux"
+          data-level="avance"
+        >
+          <input type="checkbox" class="task-checkbox" />
+          <div class="task-title">Tableaux Objets</div>
+          <div class="task-level level-avance">Avancé</div>
+        </div>
+        <div
+          class="task-cell"
+          data-day="jeudi"
+          data-time="11:30"
+          data-theme="events"
+          data-level="avance"
+        >
+          <input type="checkbox" class="task-checkbox" />
+          <div class="task-title">Événements Perso</div>
+          <div class="task-level level-avance">Avancé</div>
+        </div>
+        <div
+          class="task-cell"
+          data-day="vendredi"
+          data-time="11:30"
+          data-theme="evaluation"
+          data-level="avance"
+        >
+          <input type="checkbox" class="task-checkbox" />
+          <div class="task-title">Auto-Évaluation</div>
+          <div class="task-level level-avance">Évaluation</div>
+        </div>
+
+        <!-- 12h00 - 12h30 -->
+        <div class="time-slot">12h00-12h30</div>
+        <div
+          class="task-cell"
+          data-day="lundi"
+          data-time="12:00"
+          data-theme="revision"
+          data-level="debutant"
+        >
+          <input type="checkbox" class="task-checkbox" />
+          <div class="task-title">Révision Matinée</div>
+          <div class="task-level level-debutant">Révision</div>
+        </div>
+        <div
+          class="task-cell"
+          data-day="mardi"
+          data-time="12:00"
+          data-theme="revision"
+          data-level="debutant"
+        >
+          <input type="checkbox" class="task-checkbox" />
+          <div class="task-title">Révision Matinée</div>
+          <div class="task-level level-debutant">Révision</div>
+        </div>
+        <div
+          class="task-cell"
+          data-day="mercredi"
+          data-time="12:00"
+          data-theme="revision"
+          data-level="debutant"
+        >
+          <input type="checkbox" class="task-checkbox" />
+          <div class="task-title">Révision Matinée</div>
+          <div class="task-level level-debutant">Révision</div>
+        </div>
+        <div
+          class="task-cell"
+          data-day="jeudi"
+          data-time="12:00"
+          data-theme="revision"
+          data-level="debutant"
+        >
+          <input type="checkbox" class="task-checkbox" />
+          <div class="task-title">Révision Matinée</div>
+          <div class="task-level level-debutant">Révision</div>
+        </div>
+        <div
+          class="task-cell"
+          data-day="vendredi"
+          data-time="12:00"
+          data-theme="preparation"
+          data-level="intermediaire"
+        >
+          <input type="checkbox" class="task-checkbox" />
+          <div class="task-title">Prépa ECF</div>
+          <div class="task-level level-intermediaire">Préparation</div>
+        </div>
+
+        <!-- PAUSE DÉJEUNER -->
+        <div class="time-slot">12h30-13h20</div>
+        <div class="break-cell">🍽️ PAUSE DÉJEUNER</div>
+        <div class="break-cell">🍽️ PAUSE DÉJEUNER</div>
+        <div class="break-cell">🍽️ PAUSE DÉJEUNER</div>
+        <div class="break-cell">🍽️ PAUSE DÉJEUNER</div>
+        <div class="break-cell">🍽️ PAUSE DÉJEUNER</div>
+
+        <!-- 13h20 - 14h00 -->
+        <div class="time-slot">13h20-14h00</div>
+        <div
+          class="task-cell"
+          data-day="lundi"
+          data-time="13:20"
+          data-theme="debug"
+          data-level="intermediaire"
+        >
+          <input type="checkbox" class="task-checkbox" />
+          <div class="task-title">Debug & Console</div>
+          <div class="task-level level-intermediaire">Debug</div>
+        </div>
+        <div
+          class="task-cell"
+          data-day="mardi"
+          data-time="13:20"
+          data-theme="async"
+          data-level="avance"
+        >
+          <input type="checkbox" class="task-checkbox" />
+          <div class="task-title">Callbacks</div>
+          <div class="task-level level-avance">Avancé</div>
+        </div>
+        <div
+          class="task-cell"
+          data-day="mercredi"
+          data-time="13:20"
+          data-theme="json"
+          data-level="intermediaire"
+        >
+          <input type="checkbox" class="task-checkbox" />
+          <div class="task-title">JSON</div>
+          <div class="task-level level-intermediaire">Intermédiaire</div>
+        </div>
+        <div
+          class="task-cell"
+          data-day="jeudi"
+          data-time="13:20"
+          data-theme="stockage"
+          data-level="intermediaire"
+        >
+          <input type="checkbox" class="task-checkbox" />
+          <div class="task-title">LocalStorage</div>
+          <div class="task-level level-intermediaire">Intermédiaire</div>
+        </div>
+        <div
+          class="task-cell"
+          data-day="vendredi"
+          data-time="13:20"
+          data-theme="projet"
+          data-level="avance"
+        >
+          <input type="checkbox" class="task-checkbox" />
+          <div class="task-title">Projet Final</div>
+          <div class="task-level level-avance">Projet</div>
+        </div>
+
+        <!-- 14h00 - 14h40 -->
+        <div class="time-slot">14h00-14h40</div>
+        <div
+          class="task-cell"
+          data-day="lundi"
+          data-time="14:00"
+          data-theme="erreurs"
+          data-level="intermediaire"
+        >
+          <input type="checkbox" class="task-checkbox" />
+          <div class="task-title">Gestion Erreurs</div>
+          <div class="task-level level-intermediaire">Intermédiaire</div>
+        </div>
+        <div
+          class="task-cell"
+          data-day="mardi"
+          data-time="14:00"
+          data-theme="async"
+          data-level="avance"
+        >
+          <input type="checkbox" class="task-checkbox" />
+          <div class="task-title">Promises</div>
+          <div class="task-level level-avance">Avancé</div>
+        </div>
+        <div
+          class="task-cell"
+          data-day="mercredi"
+          data-time="14:00"
+          data-theme="api"
+          data-level="avance"
+        >
+          <input type="checkbox" class="task-checkbox" />
+          <div class="task-title">Fetch API</div>
+          <div class="task-level level-avance">Avancé</div>
+        </div>
+        <div
+          class="task-cell"
+          data-day="jeudi"
+          data-time="14:00"
+          data-theme="regex"
+          data-level="avance"
+        >
+          <input type="checkbox" class="task-checkbox" />
+          <div class="task-title">Expressions Régulières</div>
+          <div class="task-level level-avance">Avancé</div>
+        </div>
+        <div
+          class="task-cell"
+          data-day="vendredi"
+          data-time="14:00"
+          data-theme="projet"
+          data-level="avance"
+        >
+          <input type="checkbox" class="task-checkbox" />
+          <div class="task-title">Développement</div>
+          <div class="task-level level-avance">Projet</div>
+        </div>
+
+        <!-- 14h40 - 15h20 -->
+        <div class="time-slot">14h40-15h20</div>
+        <div
+          class="task-cell"
+          data-day="lundi"
+          data-time="14:40"
+          data-theme="scope"
+          data-level="avance"
+        >
+          <input type="checkbox" class="task-checkbox" />
+          <div class="task-title">Scope & Closure</div>
+          <div class="task-level level-avance">Avancé</div>
+        </div>
+        <div
+          class="task-cell"
+          data-day="mardi"
+          data-time="14:40"
+          data-theme="async"
+          data-level="avance"
+        >
+          <input type="checkbox" class="task-checkbox" />
+          <div class="task-title">Async/Await</div>
+          <div class="task-level level-avance">Avancé</div>
+        </div>
+        <div
+          class="task-cell"
+          data-day="mercredi"
+          data-time="14:40"
+          data-theme="modules"
+          data-level="avance"
+        >
+          <input type="checkbox" class="task-checkbox" />
+          <div class="task-title">Modules ES6</div>
+          <div class="task-level level-avance">Avancé</div>
+        </div>
+        <div
+          class="task-cell"
+          data-day="jeudi"
+          data-time="14:40"
+          data-theme="performance"
+          data-level="avance"
+        >
+          <input type="checkbox" class="task-checkbox" />
+          <div class="task-title">Optimisation</div>
+          <div class="task-level level-avance">Performance</div>
+        </div>
+        <div
+          class="task-cell"
+          data-day="vendredi"
+          data-time="14:40"
+          data-theme="projet"
+          data-level="avance"
+        >
+          <input type="checkbox" class="task-checkbox" />
+          <div class="task-title">Finalisation</div>
+          <div class="task-level level-avance">Projet</div>
+        </div>
+
+        <!-- 15h20 - 16h00 -->
+        <div class="time-slot">15h20-16h00</div>
+        <div
+          class="task-cell"
+          data-day="lundi"
+          data-time="15:20"
+          data-theme="best-practices"
+          data-level="intermediaire"
+        >
+          <input type="checkbox" class="task-checkbox" />
+          <div class="task-title">Bonnes Pratiques</div>
+          <div class="task-level level-intermediaire">Qualité</div>
+        </div>
+        <div
+          class="task-cell"
+          data-day="mardi"
+          data-time="15:20"
+          data-theme="testing"
+          data-level="avance"
+        >
+          <input type="checkbox" class="task-checkbox" />
+          <div class="task-title">Tests Unitaires</div>
+          <div class="task-level level-avance">Tests</div>
+        </div>
+        <div
+          class="task-cell"
+          data-day="mercredi"
+          data-time="15:20"
+          data-theme="frameworks"
+          data-level="avance"
+        >
+          <input type="checkbox" class="task-checkbox" />
+          <div class="task-title">Intro Frameworks</div>
+          <div class="task-level level-avance">Frameworks</div>
+        </div>
+        <div
+          class="task-cell"
+          data-day="jeudi"
+          data-time="15:20"
+          data-theme="securite"
+          data-level="avance"
+        >
+          <input type="checkbox" class="task-checkbox" />
+          <div class="task-title">Sécurité JS</div>
+          <div class="task-level level-avance">Sécurité</div>
+        </div>
+        <div
+          class="task-cell"
+          data-day="vendredi"
+          data-time="15:20"
+          data-theme="presentation"
+          data-level="intermediaire"
+        >
+          <input type="checkbox" class="task-checkbox" />
+          <div class="task-title">Présentation</div>
+          <div class="task-level level-intermediaire">Présentation</div>
+        </div>
+
+        <!-- 16h00 - 17h00 -->
+        <div class="time-slot">16h00-17h00</div>
+        <div
+          class="task-cell"
+          data-day="lundi"
+          data-time="16:00"
+          data-theme="revision"
+          data-level="intermediaire"
+        >
+          <input type="checkbox" class="task-checkbox" />
+          <div class="task-title">Révision Journée</div>
+          <div class="task-level level-intermediaire">Révision</div>
+        </div>
+        <div
+          class="task-cell"
+          data-day="mardi"
+          data-time="16:00"
+          data-theme="revision"
+          data-level="intermediaire"
+        >
+          <input type="checkbox" class="task-checkbox" />
+          <div class="task-title">Révision Journée</div>
+          <div class="task-level level-intermediaire">Révision</div>
+        </div>
+        <div
+          class="task-cell"
+          data-day="mercredi"
+          data-time="16:00"
+          data-theme="revision"
+          data-level="intermediaire"
+        >
+          <input type="checkbox" class="task-checkbox" />
+          <div class="task-title">Révision Journée</div>
+          <div class="task-level level-intermediaire">Révision</div>
+        </div>
+        <div
+          class="task-cell"
+          data-day="jeudi"
+          data-time="16:00"
+          data-theme="revision"
+          data-level="intermediaire"
+        >
+          <input type="checkbox" class="task-checkbox" />
+          <div class="task-title">Révision Journée</div>
+          <div class="task-level level-intermediaire">Révision</div>
+        </div>
+        <div
+          class="task-cell"
+          data-day="vendredi"
+          data-time="16:00"
+          data-theme="bilan"
+          data-level="intermediaire"
+        >
+          <input type="checkbox" class="task-checkbox" />
+          <div class="task-title">Bilan Semaine</div>
+          <div class="task-level level-intermediaire">Bilan</div>
+        </div>
+      </div>
+
+      <div class="progress-summary">
+        <div class="progress-stats">
+          <div class="stat-card">
+            <div class="stat-number" id="totalTasks">0</div>
+            <div class="stat-label">Tâches Total</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-number" id="completedTasks">0</div>
+            <div class="stat-label">Terminées</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-number" id="currentTasks">0</div>
+            <div class="stat-label">En Cours</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-number" id="delayedTasks">0</div>
+            <div class="stat-label">En Retard</div>
+          </div>
+        </div>
+        <div class="progress-bar-container">
+          <div class="progress-bar" id="overallProgress">0%</div>
+        </div>
+      </div>
+    </div>
+
+    <script>
+      class PlanningManager {
+        constructor() {
+          this.tasks = document.querySelectorAll(".task-cell");
+          this.checkboxes = document.querySelectorAll(".task-checkbox");
+          this.currentTime = new Date();
+          this.planningData = this.loadProgress();
+
+          this.init();
+        }
+
+        init() {
+          this.setupEventListeners();
+          this.updateCurrentTime();
+          this.updateTaskStatuses();
+          this.updateProgress();
+
+          // Mettre à jour toutes les minutes
+          setInterval(() => {
+            this.updateCurrentTime();
+            this.updateTaskStatuses();
+          }, 60000);
+        }
+
+        setupEventListeners() {
+          this.checkboxes.forEach((checkbox) => {
+            checkbox.addEventListener("change", (e) => {
+              const taskCell = e.target.closest(".task-cell");
+              const taskId = this.getTaskId(taskCell);
+
+              if (e.target.checked) {
+                this.markTaskCompleted(taskId, taskCell);
+              } else {
+                this.markTaskPending(taskId, taskCell);
+              }
+
+              this.saveProgress();
+              this.updateProgress();
+            });
+          });
+        }
+
+        getTaskId(taskCell) {
+          const day = taskCell.dataset.day;
+          const time = taskCell.dataset.time;
+          return `${day}-${time}`;
+        }
+
+        getCurrentTimeSlot() {
+          const now = new Date();
+          const day = now
+            .toLocaleDateString("fr-FR", { weekday: "long" })
+            .toLowerCase();
+          const hour = now.getHours();
+          const minute = now.getMinutes();
+          const timeInMinutes = hour * 60 + minute;
+
+          // Définir les créneaux horaires
+          const timeSlots = [
+            { start: 9 * 60, end: 9 * 60 + 30, time: "09:00" },
+            { start: 9 * 60 + 30, end: 10 * 60, time: "09:30" },
+            { start: 10 * 60, end: 10 * 60 + 30, time: "10:00" },
+            { start: 10 * 60 + 30, end: 11 * 60, time: "10:30" },
+            { start: 11 * 60, end: 11 * 60 + 30, time: "11:00" },
+            { start: 11 * 60 + 30, end: 12 * 60, time: "11:30" },
+            { start: 12 * 60, end: 12 * 60 + 30, time: "12:00" },
+            { start: 13 * 60 + 20, end: 14 * 60, time: "13:20" },
+            { start: 14 * 60, end: 14 * 60 + 40, time: "14:00" },
+            { start: 14 * 60 + 40, end: 15 * 60 + 20, time: "14:40" },
+            { start: 15 * 60 + 20, end: 16 * 60, time: "15:20" },
+            { start: 16 * 60, end: 17 * 60, time: "16:00" },
+          ];
+
+          for (let slot of timeSlots) {
+            if (timeInMinutes >= slot.start && timeInMinutes < slot.end) {
+              return { day, time: slot.time };
+            }
+          }
+
+          return null;
+        }
+
+        updateTaskStatuses() {
+          const currentSlot = this.getCurrentTimeSlot();
+          const now = new Date();
+
+          this.tasks.forEach((task) => {
+            const taskId = this.getTaskId(task);
+            const checkbox = task.querySelector(".task-checkbox");
+
+            // Réinitialiser les classes
+            task.classList.remove(
+              "status-current",
+              "status-delayed",
+              "status-completed",
+              "status-pending"
+            );
+
+            if (checkbox.checked) {
+              task.classList.add("status-completed");
+              return;
+            }
+
+            const taskDay = task.dataset.day;
+            const taskTime = task.dataset.time;
+
+            // Vérifier si c'est la tâche actuelle
+            if (
+              currentSlot &&
+              taskDay === currentSlot.day &&
+              taskTime === currentSlot.time
+            ) {
+              task.classList.add("status-current");
+              return;
+            }
+
+            // Vérifier si la tâche est en retard
+            if (this.isTaskDelayed(taskDay, taskTime, now)) {
+              task.classList.add("status-delayed");
+              return;
+            }
+
+            task.classList.add("status-pending");
+          });
+        }
+
+        isTaskDelayed(taskDay, taskTime, now) {
+          const dayMapping = {
+            lundi: 1,
+            mardi: 2,
+            mercredi: 3,
+            jeudi: 4,
+            vendredi: 5,
+          };
+
+          const currentDay = now.getDay();
+          const taskDayNum = dayMapping[taskDay];
+
+          if (!taskDayNum) return false;
+
+          // Si c'est un jour passé
+          if (taskDayNum < currentDay) return true;
+
+          // Si c'est le même jour, vérifier l'heure
+          if (taskDayNum === currentDay) {
+            const [hour, minute] = taskTime.split(":").map(Number);
+            const taskTimeInMinutes = hour * 60 + minute;
+            const currentTimeInMinutes = now.getHours() * 60 + now.getMinutes();
+
+            return currentTimeInMinutes > taskTimeInMinutes + 30; // 30 minutes de grâce
+          }
+
+          return false;
+        }
+
+        markTaskCompleted(taskId, taskCell) {
+          this.planningData[taskId] = {
+            completed: true,
+            completedAt: new Date().toISOString(),
+          };
+          taskCell.classList.remove(
+            "status-pending",
+            "status-current",
+            "status-delayed"
+          );
+          taskCell.classList.add("status-completed");
+        }
+
+        markTaskPending(taskId, taskCell) {
+          delete this.planningData[taskId];
+          taskCell.classList.remove("status-completed");
+        }
+
+        updateProgress() {
+          const totalTasks = this.tasks.length;
+          const completedTasks = Object.keys(this.planningData).length;
+          const currentTasks =
+            document.querySelectorAll(".status-current").length;
+          const delayedTasks =
+            document.querySelectorAll(".status-delayed").length;
+
+          document.getElementById("totalTasks").textContent = totalTasks;
+          document.getElementById("completedTasks").textContent =
+            completedTasks;
+          document.getElementById("currentTasks").textContent = currentTasks;
+          document.getElementById("delayedTasks").textContent = delayedTasks;
+
+          const progressPercentage = Math.round(
+            (completedTasks / totalTasks) * 100
+          );
+          const progressBar = document.getElementById("overallProgress");
+          progressBar.style.width = progressPercentage + "%";
+          progressBar.textContent = progressPercentage + "%";
+        }
+
+        updateCurrentTime() {
+          const now = new Date();
+          const timeString = now.toLocaleString("fr-FR", {
+            weekday: "long",
+            year: "numeric",
+            month: "long",
+            day: "numeric",
+            hour: "2-digit",
+            minute: "2-digit",
+          });
+          document.getElementById("currentTime").textContent = timeString;
+        }
+
+        saveProgress() {
+          localStorage.setItem(
+            "planning_progress",
+            JSON.stringify(this.planningData)
+          );
+        }
+
+        loadProgress() {
+          const saved = localStorage.getItem("planning_progress");
+          if (saved) {
+            const data = JSON.parse(saved);
+            // Appliquer les données sauvegardées
+            Object.keys(data).forEach((taskId) => {
+              const [day, time] = taskId.split("-");
+              const task = document.querySelector(
+                `[data-day="${day}"][data-time="${time}"]`
+              );
+              if (task) {
+                const checkbox = task.querySelector(".task-checkbox");
+                checkbox.checked = true;
+              }
+            });
+            return data;
+          }
+          return {};
+        }
+      }
+
+      // Initialiser l'application quand le DOM est chargé
+      document.addEventListener("DOMContentLoaded", () => {
+        new PlanningManager();
+      });
+    </script>
+  </body>
+</html>

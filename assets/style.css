@@ -1,0 +1,265 @@
+/* Style global */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+  line-height: 1.6;
+  color: #333;
+  background-color: #f5f5f5;
+}
+
+/* Navigation */
+nav {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  padding: 1rem 0;
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+}
+
+nav ul {
+  list-style: none;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 1rem;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 1rem;
+}
+
+nav li a {
+  color: white;
+  text-decoration: none;
+  padding: 0.5rem 1rem;
+  border-radius: 25px;
+  transition: all 0.3s ease;
+  font-weight: 500;
+}
+
+nav li a:hover {
+  background-color: rgba(255, 255, 255, 0.2);
+  transform: translateY(-2px);
+}
+
+/* Lien spécial pour le planning */
+nav li a.planning-link {
+  background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+  color: white;
+  font-weight: 600;
+  box-shadow: 0 3px 10px rgba(240, 147, 251, 0.3);
+  animation: pulse 2s infinite;
+}
+
+nav li a.planning-link:hover {
+  background: linear-gradient(135deg, #e74c3c 0%, #c0392b 100%);
+  box-shadow: 0 5px 15px rgba(231, 76, 60, 0.4);
+  transform: translateY(-2px) scale(1.05);
+}
+
+@keyframes pulse {
+  0% {
+    box-shadow: 0 3px 10px rgba(240, 147, 251, 0.3);
+  }
+  50% {
+    box-shadow: 0 5px 15px rgba(240, 147, 251, 0.6);
+  }
+  100% {
+    box-shadow: 0 3px 10px rgba(240, 147, 251, 0.3);
+  }
+}
+
+/* Header */
+header {
+  background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+  color: white;
+  text-align: center;
+  padding: 3rem 1rem;
+}
+
+header h1 {
+  font-size: 2.5rem;
+  font-weight: 300;
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+}
+
+/* Main content */
+main {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 2rem 1rem;
+}
+
+/* Sections */
+section {
+  background: white;
+  margin-bottom: 3rem;
+  border-radius: 15px;
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+  overflow: hidden;
+}
+
+section h2 {
+  background: linear-gradient(135deg, #84fab0 0%, #8fd3f4 100%);
+  color: #333;
+  padding: 1.5rem 2rem;
+  margin: 0;
+  font-size: 1.8rem;
+  font-weight: 600;
+}
+
+/* Exercices */
+.exercise {
+  padding: 2rem;
+  border-bottom: 1px solid #eee;
+  transition: background-color 0.3s ease;
+}
+
+.exercise:last-child {
+  border-bottom: none;
+}
+
+.exercise:hover {
+  background-color: #fafafa;
+}
+
+.exercise h3 {
+  color: #2c3e50;
+  margin-bottom: 1rem;
+  font-size: 1.3rem;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.exercise h3::before {
+  content: "📝";
+  font-size: 1.2rem;
+}
+
+.exercise p {
+  margin-bottom: 1.5rem;
+  color: #555;
+  line-height: 1.7;
+}
+
+.exercise p strong {
+  color: #e74c3c;
+  font-weight: 600;
+}
+
+/* Boutons de correction */
+.toggle-solution {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: white;
+  border: none;
+  padding: 0.8rem 1.5rem;
+  border-radius: 25px;
+  cursor: pointer;
+  font-size: 0.9rem;
+  font-weight: 500;
+  transition: all 0.3s ease;
+  box-shadow: 0 3px 10px rgba(102, 126, 234, 0.3);
+}
+
+.toggle-solution:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 5px 15px rgba(102, 126, 234, 0.4);
+}
+
+.toggle-solution:active {
+  transform: translateY(0);
+}
+
+.toggle-solution.active {
+  background: linear-gradient(135deg, #e74c3c 0%, #c0392b 100%);
+  box-shadow: 0 3px 10px rgba(231, 76, 60, 0.3);
+}
+
+/* Solutions cachées */
+.solution {
+  max-height: 0;
+  overflow: hidden;
+  transition: all 0.4s ease;
+  margin-top: 0;
+  opacity: 0;
+}
+
+.solution.show {
+  max-height: 1000px;
+  margin-top: 1.5rem;
+  opacity: 1;
+}
+
+.solution pre {
+  background: #2d3748;
+  color: #e2e8f0;
+  padding: 1.5rem;
+  border-radius: 10px;
+  overflow-x: auto;
+  border-left: 4px solid #667eea;
+  position: relative;
+}
+
+.solution pre::before {
+  content: "💡 Solution";
+  position: absolute;
+  top: -10px;
+  left: 15px;
+  background: #2d3748;
+  padding: 0 10px;
+  font-size: 0.8rem;
+  color: #a0aec0;
+  font-weight: 600;
+}
+
+.solution code {
+  font-family: "Fira Code", "Courier New", monospace;
+  font-size: 0.9rem;
+  line-height: 1.5;
+}
+
+/* Syntax highlighting */
+.solution pre code {
+  color: #e2e8f0;
+}
+
+/* Scrollbar pour le code */
+.solution pre::-webkit-scrollbar {
+  height: 8px;
+}
+
+.solution pre::-webkit-scrollbar-track {
+  background: #1a202c;
+  border-radius: 4px;
+}
+
+.solution pre::-webkit-scrollbar-thumb {
+  background: #4a5568;
+  border-radius: 4px;
+}
+
+.solution pre::-webkit-scrollbar-thumb:hover {
+  background: #667eea;
+}
+
+/* Animation pour les niveaux de difficulté */
+.exercise h3:contains("Débutant")::after {
+  content: "🟢";
+  margin-left: auto;
+}
+
+.exercise h3:contains("Intermédiaire")::after {
+  content: "🟡";
+  margin-left: auto;
+}
+
+.exercise h3:contains("Avancé")::after {
+  content: "🔴";
+  margin-left: auto;
+}

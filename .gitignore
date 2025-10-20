@@ -1,0 +1,324 @@
+# ================================
+# .gitignore pour Projet JavaScript
+# FlorenceJS - Application d'exercices
+# ================================
+
+# ================================
+# Fichiers système
+# ================================
+
+# Windows
+Thumbs.db
+ehthumbs.db
+Desktop.ini
+$RECYCLE.BIN/
+*.cab
+*.msi
+*.msix
+*.msm
+*.msp
+*.lnk
+
+# macOS
+.DS_Store
+.AppleDouble
+.LSOverride
+Icon?
+._*
+.Spotlight-V100
+.Trashes
+
+# Linux
+*~
+.directory
+.Trash-*
+
+# ================================
+# Éditeurs et IDEs
+# ================================
+
+# Visual Studio Code
+.vscode/
+!.vscode/settings.json
+!.vscode/tasks.json
+!.vscode/launch.json
+!.vscode/extensions.json
+*.code-workspace
+
+# JetBrains (WebStorm, IntelliJ, etc.)
+.idea/
+*.iws
+*.iml
+*.ipr
+
+# Sublime Text
+*.sublime-project
+*.sublime-workspace
+
+# Atom
+.atom/
+
+# Vim
+*.swp
+*.swo
+*~
+
+# Emacs
+*~
+\#*\#
+/.emacs.desktop
+/.emacs.desktop.lock
+*.elc
+auto-save-list
+tramp
+.\#*
+
+# ================================
+# Node.js (si vous ajoutez npm plus tard)
+# ================================
+
+# Dependencies
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+lerna-debug.log*
+
+# Runtime data
+pids
+*.pid
+*.seed
+*.pid.lock
+
+# Coverage directory used by tools like istanbul
+coverage/
+*.lcov
+
+# nyc test coverage
+.nyc_output
+
+# Grunt intermediate storage
+.grunt
+
+# Bower dependency directory
+bower_components
+
+# node-waf configuration
+.lock-wscript
+
+# Compiled binary addons
+build/Release
+
+# Dependency directories
+jspm_packages/
+
+# Optional npm cache directory
+.npm
+
+# Optional eslint cache
+.eslintcache
+
+# Optional REPL history
+.node_repl_history
+
+# Output of 'npm pack'
+*.tgz
+
+# Yarn Integrity file
+.yarn-integrity
+
+# dotenv environment variables file
+.env
+.env.test
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+
+# parcel-bundler cache
+.cache
+.parcel-cache
+
+# next.js build output
+.next
+
+# nuxt.js build output
+.nuxt
+
+# vuepress build output
+.vuepress/dist
+
+# Serverless directories
+.serverless/
+
+# FuseBox cache
+.fusebox/
+
+# DynamoDB Local files
+.dynamodb/
+
+# ================================
+# Fichiers de développement web
+# ================================
+
+# Sass
+.sass-cache/
+*.css.map
+*.sass.map
+*.scss.map
+
+# Less
+*.less.map
+
+# Stylus
+*.styl.map
+
+# Fichiers de build/dist (si vous utilisez des bundlers)
+dist/
+build/
+public/build/
+
+# Webpack
+.webpack/
+
+# Rollup
+.rollup.cache/
+
+# ================================
+# Fichiers temporaires et logs
+# ================================
+
+# Logs
+logs
+*.log
+
+# Fichiers temporaires
+tmp/
+temp/
+.tmp/
+.temp/
+
+# Backup files
+*.bak
+*.backup
+*.old
+*.orig
+
+# ================================
+# Documentation et tests
+# ================================
+
+# Documentation générée
+docs/build/
+docs/_build/
+doc/build/
+
+# Tests
+test-results/
+coverage/
+.coverage
+
+# ================================
+# Fichiers de configuration locaux
+# ================================
+
+# Configuration locale
+config.local.json
+settings.local.json
+.env.local
+
+# Fichiers de configuration personnels
+config/local.js
+config/development.local.js
+config/production.local.js
+
+# ================================
+# Fichiers médias volumineux
+# ================================
+
+# Images haute résolution (gardez les optimisées)
+*.psd
+*.ai
+*.sketch
+
+# Vidéos
+*.mp4
+*.avi
+*.mov
+*.wmv
+*.flv
+
+# Audio
+*.wav
+*.flac
+*.aac
+
+# Archives
+*.zip
+*.rar
+*.7z
+*.tar.gz
+
+# ================================
+# Fichiers spécifiques au projet
+# ================================
+
+# Fichiers de progression utilisateur (optionnel)
+# Décommentez si vous ne voulez pas versionner les données utilisateur
+# user-progress.json
+# planning-progress.json
+
+# Fichiers de test locaux
+test.html
+test.js
+debug.html
+demo.html
+
+# Captures d'écran temporaires
+screenshots/
+captures/
+
+# ================================
+# Sécurité
+# ================================
+
+# Clés et tokens
+*.key
+*.pem
+*.p12
+*.pfx
+.env
+secrets.json
+auth.json
+
+# ================================
+# Performance et cache
+# ================================
+
+# Cache des navigateurs
+.cache/
+cache/
+
+# Service Workers
+sw.js.map
+
+# ================================
+# Divers
+# ================================
+
+# Fichiers de verrouillage
+*.lock
+
+# Fichiers de synchronisation
+*.sync
+*.syncthing.*
+
+# Fichiers Dropbox
+.dropbox
+.dropbox.attr
+
+# Google Drive
+.gd_backup
+
+# OneDrive
+~$*

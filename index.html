@@ -1,0 +1,985 @@
+<!DOCTYPE html>
+<html lang="fr">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Exercices JavaScript - Florence</title>
+    <link rel="stylesheet" href="assets/style.css" />
+    <link rel="stylesheet" href="assets/respolnsive.css" />
+  </head>
+  <body>
+    <nav>
+      <ul>
+        <li>
+          <a href="planning.html" target="_blank" class="planning-link"
+            >📅 Planning ECF</a
+          >
+        </li>
+        <li><a href="#variables">Variables et types de données</a></li>
+        <li><a href="#functions">Fonctions</a></li>
+        <li><a href="#loops">Boucles</a></li>
+        <li><a href="#conditions">Conditions</a></li>
+        <li><a href="#arrays">Tableaux</a></li>
+        <li><a href="#objects">Objets</a></li>
+        <li><a href="#events">Événements</a></li>
+        <li><a href="#dom">Manipulation du DOM</a></li>
+      </ul>
+    </nav>
+    <header>
+      <h1>Bienvenue sur votre application d'exercices JavaScript - Florence</h1>
+    </header>
+    <main>
+      <section id="variables">
+        <h2>Variables et types de données</h2>
+
+        <div class="exercise">
+          <h3>Exercice 1 - Déclaration de variables (Débutant)</h3>
+          <p>
+            <strong>Consigne :</strong> Créez trois variables : une avec votre
+            nom (string), une avec votre âge (number), et une booléenne
+            indiquant si vous aimez JavaScript.
+          </p>
+          <button class="toggle-solution" data-target="solution-var-1">
+            Voir la correction
+          </button>
+          <div class="solution" id="solution-var-1">
+            <pre><code>// Correction de l'exercice 1 - Variables
+let nom = "Florence";
+let age = 25;
+let aimeJavaScript = true;
+
+console.log("Nom:", nom);
+console.log("Age:", age);
+console.log("Aime JavaScript:", aimeJavaScript);</code></pre>
+          </div>
+        </div>
+
+        <div class="exercise">
+          <h3>Exercice 2 - Types de données (Intermédiaire)</h3>
+          <p>
+            <strong>Consigne :</strong> Créez une fonction qui prend une valeur
+            en paramètre et retourne son type. Testez avec différents types de
+            données.
+          </p>
+          <button class="toggle-solution" data-target="solution-var-2">
+            Voir la correction
+          </button>
+          <div class="solution" id="solution-var-2">
+            <pre><code>// Correction de l'exercice 2 - Types de données
+function obtenirType(valeur) {
+    return typeof valeur;
+}
+
+// Tests
+console.log(obtenirType("Hello")); // string
+console.log(obtenirType(42)); // number
+console.log(obtenirType(true)); // boolean
+console.log(obtenirType([])); // object
+console.log(obtenirType(null)); // object
+console.log(obtenirType(undefined)); // undefined</code></pre>
+          </div>
+        </div>
+
+        <div class="exercise">
+          <h3>Exercice 3 - Conversion de types (Avancé)</h3>
+          <p>
+            <strong>Consigne :</strong> Créez une fonction qui convertit une
+            chaîne de caractères en nombre, en gérant les cas d'erreur. Si la
+            conversion échoue, retournez 0.
+          </p>
+          <button class="toggle-solution" data-target="solution-var-3">
+            Voir la correction
+          </button>
+          <div class="solution" id="solution-var-3">
+            <pre><code>// Correction de l'exercice 3 - Conversion de types
+function convertirEnNombre(chaine) {
+    const nombre = Number(chaine);
+    return isNaN(nombre) ? 0 : nombre;
+}
+
+// Tests
+console.log(convertirEnNombre("123")); // 123
+console.log(convertirEnNombre("45.67")); // 45.67
+console.log(convertirEnNombre("abc")); // 0
+console.log(convertirEnNombre("")); // 0</code></pre>
+          </div>
+        </div>
+      </section>
+
+      <section id="functions">
+        <h2>Fonctions</h2>
+
+        <div class="exercise">
+          <h3>Exercice 1 - Fonction simple (Débutant)</h3>
+          <p>
+            <strong>Consigne :</strong> Créez une fonction qui prend deux
+            nombres en paramètres et retourne leur somme.
+          </p>
+          <button class="toggle-solution" data-target="solution-func-1">
+            Voir la correction
+          </button>
+          <div class="solution" id="solution-func-1">
+            <pre><code>// Correction de l'exercice 1 - Fonction simple
+function additionner(a, b) {
+    return a + b;
+}
+
+// Test
+console.log(additionner(5, 3)); // 8
+console.log(additionner(10, -2)); // 8</code></pre>
+          </div>
+        </div>
+
+        <div class="exercise">
+          <h3>
+            Exercice 2 - Fonction avec paramètres par défaut (Intermédiaire)
+          </h3>
+          <p>
+            <strong>Consigne :</strong> Créez une fonction de salutation qui
+            prend un nom et une langue (par défaut "fr") et retourne un message
+            approprié.
+          </p>
+          <button class="toggle-solution" data-target="solution-func-2">
+            Voir la correction
+          </button>
+          <div class="solution" id="solution-func-2">
+            <pre><code>// Correction de l'exercice 2 - Paramètres par défaut
+function saluer(nom, langue = "fr") {
+    const salutations = {
+        fr: `Bonjour ${nom}!`,
+        en: `Hello ${nom}!`,
+        es: `¡Hola ${nom}!`
+    };
+    
+    return salutations[langue] || salutations.fr;
+}
+
+// Tests
+console.log(saluer("Florence")); // Bonjour Florence!
+console.log(saluer("Florence", "en")); // Hello Florence!
+console.log(saluer("Florence", "es")); // ¡Hola Florence!</code></pre>
+          </div>
+        </div>
+
+        <div class="exercise">
+          <h3>Exercice 3 - Fonction d'ordre supérieur (Avancé)</h3>
+          <p>
+            <strong>Consigne :</strong> Créez une fonction qui prend une
+            fonction de calcul et deux nombres, puis applique cette fonction aux
+            nombres.
+          </p>
+          <button class="toggle-solution" data-target="solution-func-3">
+            Voir la correction
+          </button>
+          <div class="solution" id="solution-func-3">
+            <pre><code>// Correction de l'exercice 3 - Fonction d'ordre supérieur
+function appliquerOperation(operation, a, b) {
+    return operation(a, b);
+}
+
+// Fonctions de calcul
+const addition = (x, y) => x + y;
+const multiplication = (x, y) => x * y;
+const puissance = (x, y) => Math.pow(x, y);
+
+// Tests
+console.log(appliquerOperation(addition, 5, 3)); // 8
+console.log(appliquerOperation(multiplication, 4, 6)); // 24
+console.log(appliquerOperation(puissance, 2, 3)); // 8</code></pre>
+          </div>
+        </div>
+      </section>
+      <section id="loops">
+        <h2>Boucles</h2>
+
+        <div class="exercise">
+          <h3>Exercice 1 - Boucle for simple (Débutant)</h3>
+          <p>
+            <strong>Consigne :</strong> Utilisez une boucle for pour afficher
+            les nombres de 1 à 10 dans la console.
+          </p>
+          <button class="toggle-solution" data-target="solution-loop-1">
+            Voir la correction
+          </button>
+          <div class="solution" id="solution-loop-1">
+            <pre><code>// Correction de l'exercice 1 - Boucle for
+for (let i = 1; i <= 10; i++) {
+    console.log(i);
+}</code></pre>
+          </div>
+        </div>
+
+        <div class="exercise">
+          <h3>Exercice 2 - Boucle while avec condition (Intermédiaire)</h3>
+          <p>
+            <strong>Consigne :</strong> Créez une boucle while qui génère des
+            nombres aléatoires entre 1 et 100 jusqu'à obtenir un nombre
+            supérieur à 90.
+          </p>
+          <button class="toggle-solution" data-target="solution-loop-2">
+            Voir la correction
+          </button>
+          <div class="solution" id="solution-loop-2">
+            <pre><code>// Correction de l'exercice 2 - Boucle while
+let nombre = 0;
+let tentatives = 0;
+
+while (nombre <= 90) {
+    nombre = Math.floor(Math.random() * 100) + 1;
+    tentatives++;
+    console.log(`Tentative ${tentatives}: ${nombre}`);
+}
+
+console.log(`Nombre final: ${nombre} (obtenu en ${tentatives} tentatives)`);</code></pre>
+          </div>
+        </div>
+
+        <div class="exercise">
+          <h3>Exercice 3 - Boucles imbriquées (Avancé)</h3>
+          <p>
+            <strong>Consigne :</strong> Créez une fonction qui génère une table
+            de multiplication de 1 à n sous forme de tableau 2D.
+          </p>
+          <button class="toggle-solution" data-target="solution-loop-3">
+            Voir la correction
+          </button>
+          <div class="solution" id="solution-loop-3">
+            <pre><code>// Correction de l'exercice 3 - Boucles imbriquées
+function genererTableMultiplication(n) {
+    const table = [];
+    
+    for (let i = 1; i <= n; i++) {
+        const ligne = [];
+        for (let j = 1; j <= n; j++) {
+            ligne.push(i * j);
+        }
+        table.push(ligne);
+    }
+    
+    return table;
+}
+
+// Test et affichage
+const table5x5 = genererTableMultiplication(5);
+console.table(table5x5);</code></pre>
+          </div>
+        </div>
+      </section>
+
+      <section id="conditions">
+        <h2>Conditions</h2>
+
+        <div class="exercise">
+          <h3>Exercice 1 - If/else simple (Débutant)</h3>
+          <p>
+            <strong>Consigne :</strong> Créez une fonction qui vérifie si un
+            nombre est pair ou impair.
+          </p>
+          <button class="toggle-solution" data-target="solution-cond-1">
+            Voir la correction
+          </button>
+          <div class="solution" id="solution-cond-1">
+            <pre><code>// Correction de l'exercice 1 - If/else
+function estPair(nombre) {
+    if (nombre % 2 === 0) {
+        return "pair";
+    } else {
+        return "impair";
+    }
+}
+
+// Tests
+console.log(estPair(4)); // pair
+console.log(estPair(7)); // impair</code></pre>
+          </div>
+        </div>
+
+        <div class="exercise">
+          <h3>Exercice 2 - Switch case (Intermédiaire)</h3>
+          <p>
+            <strong>Consigne :</strong> Créez une fonction qui retourne le
+            nombre de jours d'un mois donné (gérez les années bissextiles pour
+            février).
+          </p>
+          <button class="toggle-solution" data-target="solution-cond-2">
+            Voir la correction
+          </button>
+          <div class="solution" id="solution-cond-2">
+            <pre><code>// Correction de l'exercice 2 - Switch case
+function joursParMois(mois, annee = new Date().getFullYear()) {
+    switch (mois.toLowerCase()) {
+        case 'janvier':
+        case 'mars':
+        case 'mai':
+        case 'juillet':
+        case 'août':
+        case 'octobre':
+        case 'décembre':
+            return 31;
+        case 'avril':
+        case 'juin':
+        case 'septembre':
+        case 'novembre':
+            return 30;
+        case 'février':
+            return (annee % 4 === 0 && (annee % 100 !== 0 || annee % 400 === 0)) ? 29 : 28;
+        default:
+            return null;
+    }
+}
+
+// Tests
+console.log(joursParMois('février', 2024)); // 29
+console.log(joursParMois('avril')); // 30</code></pre>
+          </div>
+        </div>
+
+        <div class="exercise">
+          <h3>Exercice 3 - Conditions complexes (Avancé)</h3>
+          <p>
+            <strong>Consigne :</strong> Créez une fonction qui détermine la
+            catégorie d'âge d'une personne et ses privilèges.
+          </p>
+          <button class="toggle-solution" data-target="solution-cond-3">
+            Voir la correction
+          </button>
+          <div class="solution" id="solution-cond-3">
+            <pre><code>// Correction de l'exercice 3 - Conditions complexes
+function categoriserAge(age) {
+    let categorie, privileges;
+    
+    if (age < 0) {
+        return { erreur: "Âge invalide" };
+    } else if (age < 13) {
+        categorie = "Enfant";
+        privileges = ["Jeux", "École"];
+    } else if (age >= 13 && age < 18) {
+        categorie = "Adolescent";
+        privileges = ["Cinéma", "Sport", "Réseaux sociaux"];
+    } else if (age >= 18 && age < 65) {
+        categorie = "Adulte";
+        privileges = ["Vote", "Conduite", "Travail", "Tout"];
+    } else {
+        categorie = "Senior";
+        privileges = ["Retraite", "Réductions", "Sagesse"];
+    }
+    
+    return { categorie, privileges, peutVoter: age >= 18 };
+}
+
+// Tests
+console.log(categoriserAge(16));
+console.log(categoriserAge(25));</code></pre>
+          </div>
+        </div>
+      </section>
+      <section id="arrays">
+        <h2>Tableaux</h2>
+
+        <div class="exercise">
+          <h3>Exercice 1 - Manipulation de base (Débutant)</h3>
+          <p>
+            <strong>Consigne :</strong> Créez un tableau de fruits, ajoutez-en
+            un, supprimez le premier et affichez la longueur.
+          </p>
+          <button class="toggle-solution" data-target="solution-array-1">
+            Voir la correction
+          </button>
+          <div class="solution" id="solution-array-1">
+            <pre><code>// Correction de l'exercice 1 - Tableaux de base
+let fruits = ["pomme", "banane", "orange"];
+console.log("Tableau initial:", fruits);
+
+// Ajouter un fruit
+fruits.push("kiwi");
+console.log("Après ajout:", fruits);
+
+// Supprimer le premier
+let premierFruit = fruits.shift();
+console.log("Fruit supprimé:", premierFruit);
+console.log("Tableau final:", fruits);
+console.log("Longueur:", fruits.length);</code></pre>
+          </div>
+        </div>
+
+        <div class="exercise">
+          <h3>Exercice 2 - Méthodes de tableau (Intermédiaire)</h3>
+          <p>
+            <strong>Consigne :</strong> À partir d'un tableau de nombres,
+            filtrez les pairs, doublez-les et calculez leur somme.
+          </p>
+          <button class="toggle-solution" data-target="solution-array-2">
+            Voir la correction
+          </button>
+          <div class="solution" id="solution-array-2">
+            <pre><code>// Correction de l'exercice 2 - Méthodes de tableau
+const nombres = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
+
+// Filtrer les nombres pairs
+const nombresPairs = nombres.filter(n => n % 2 === 0);
+console.log("Nombres pairs:", nombresPairs);
+
+// Doubler chaque nombre pair
+const nombresDoubles = nombresPairs.map(n => n * 2);
+console.log("Nombres doublés:", nombresDoubles);
+
+// Calculer la somme
+const somme = nombresDoubles.reduce((acc, n) => acc + n, 0);
+console.log("Somme:", somme);
+
+// En une seule chaîne
+const resultat = nombres
+    .filter(n => n % 2 === 0)
+    .map(n => n * 2)
+    .reduce((acc, n) => acc + n, 0);
+console.log("Résultat final:", resultat);</code></pre>
+          </div>
+        </div>
+
+        <div class="exercise">
+          <h3>Exercice 3 - Tableau d'objets (Avancé)</h3>
+          <p>
+            <strong>Consigne :</strong> Gérez une liste d'étudiants avec leurs
+            notes et calculez les statistiques.
+          </p>
+          <button class="toggle-solution" data-target="solution-array-3">
+            Voir la correction
+          </button>
+          <div class="solution" id="solution-array-3">
+            <pre><code>// Correction de l'exercice 3 - Tableau d'objets
+const etudiants = [
+    { nom: "Alice", notes: [15, 18, 16] },
+    { nom: "Bob", notes: [12, 14, 13] },
+    { nom: "Charlie", notes: [18, 19, 20] },
+    { nom: "Diana", notes: [10, 11, 9] }
+];
+
+function calculerStatistiques(etudiants) {
+    const etudiantsAvecMoyenne = etudiants.map(etudiant => {
+        const moyenne = etudiant.notes.reduce((a, b) => a + b, 0) / etudiant.notes.length;
+        return { ...etudiant, moyenne: moyenne.toFixed(2) };
+    });
+    
+    const moyenneClasse = etudiantsAvecMoyenne
+        .reduce((acc, etudiant) => acc + parseFloat(etudiant.moyenne), 0) / etudiantsAvecMoyenne.length;
+    
+    const meilleurEtudiant = etudiantsAvecMoyenne
+        .reduce((meilleur, actuel) => 
+            parseFloat(actuel.moyenne) > parseFloat(meilleur.moyenne) ? actuel : meilleur
+        );
+    
+    return {
+        etudiants: etudiantsAvecMoyenne,
+        moyenneClasse: moyenneClasse.toFixed(2),
+        meilleurEtudiant: meilleurEtudiant.nom
+    };
+}
+
+const resultats = calculerStatistiques(etudiants);
+console.log(resultats);</code></pre>
+          </div>
+        </div>
+      </section>
+
+      <section id="objects">
+        <h2>Objets</h2>
+
+        <div class="exercise">
+          <h3>Exercice 1 - Création d'objet (Débutant)</h3>
+          <p>
+            <strong>Consigne :</strong> Créez un objet représentant une voiture
+            avec ses propriétés et une méthode pour démarrer.
+          </p>
+          <button class="toggle-solution" data-target="solution-obj-1">
+            Voir la correction
+          </button>
+          <div class="solution" id="solution-obj-1">
+            <pre><code>// Correction de l'exercice 1 - Objet simple
+const voiture = {
+    marque: "Toyota",
+    modele: "Prius",
+    annee: 2023,
+    couleur: "bleu",
+    demarre: false,
+    
+    demarrer() {
+        if (!this.demarre) {
+            this.demarre = true;
+            console.log(`La ${this.marque} ${this.modele} démarre!`);
+        } else {
+            console.log("La voiture est déjà démarrée.");
+        }
+    },
+    
+    arreter() {
+        if (this.demarre) {
+            this.demarre = false;
+            console.log("La voiture s'arrête.");
+        }
+    }
+};
+
+voiture.demarrer();
+console.log(voiture);</code></pre>
+          </div>
+        </div>
+
+        <div class="exercise">
+          <h3>Exercice 2 - Constructeur et prototype (Intermédiaire)</h3>
+          <p>
+            <strong>Consigne :</strong> Créez une classe Personne avec
+            constructeur et méthodes, puis instanciez plusieurs objets.
+          </p>
+          <button class="toggle-solution" data-target="solution-obj-2">
+            Voir la correction
+          </button>
+          <div class="solution" id="solution-obj-2">
+            <pre><code>// Correction de l'exercice 2 - Classe Personne
+class Personne {
+    constructor(nom, prenom, age) {
+        this.nom = nom;
+        this.prenom = prenom;
+        this.age = age;
+    }
+    
+    sePresenter() {
+        return `Bonjour, je suis ${this.prenom} ${this.nom} et j'ai ${this.age} ans.`;
+    }
+    
+    vieillir() {
+        this.age++;
+        console.log(`${this.prenom} a maintenant ${this.age} ans.`);
+    }
+    
+    get nomComplet() {
+        return `${this.prenom} ${this.nom}`;
+    }
+}
+
+// Utilisation
+const personne1 = new Personne("Dupont", "Marie", 25);
+const personne2 = new Personne("Martin", "Pierre", 30);
+
+console.log(personne1.sePresenter());
+console.log(personne2.nomComplet);
+personne1.vieillir();</code></pre>
+          </div>
+        </div>
+
+        <div class="exercise">
+          <h3>Exercice 3 - Héritage et polymorphisme (Avancé)</h3>
+          <p>
+            <strong>Consigne :</strong> Créez une hiérarchie de classes : Animal
+            > Mammifère > Chien, avec des méthodes spécialisées.
+          </p>
+          <button class="toggle-solution" data-target="solution-obj-3">
+            Voir la correction
+          </button>
+          <div class="solution" id="solution-obj-3">
+            <pre><code>// Correction de l'exercice 3 - Héritage
+class Animal {
+    constructor(nom, age) {
+        this.nom = nom;
+        this.age = age;
+    }
+    
+    faireDuBruit() {
+        console.log(`${this.nom} fait du bruit.`);
+    }
+    
+    seDeplacer() {
+        console.log(`${this.nom} se déplace.`);
+    }
+}
+
+class Mammifere extends Animal {
+    constructor(nom, age, couleurPoil) {
+        super(nom, age);
+        this.couleurPoil = couleurPoil;
+    }
+    
+    allaiter() {
+        console.log(`${this.nom} allaite ses petits.`);
+    }
+}
+
+class Chien extends Mammifere {
+    constructor(nom, age, couleurPoil, race) {
+        super(nom, age, couleurPoil);
+        this.race = race;
+    }
+    
+    faireDuBruit() {
+        console.log(`${this.nom} aboie: Woof!`);
+    }
+    
+    seDeplacer() {
+        console.log(`${this.nom} court joyeusement.`);
+    }
+    
+    donnerLaPatte() {
+        console.log(`${this.nom} donne la patte.`);
+    }
+}
+
+// Utilisation
+const monChien = new Chien("Rex", 3, "brun", "Labrador");
+monChien.faireDuBruit();
+monChien.seDeplacer();
+monChien.donnerLaPatte();
+monChien.allaiter();</code></pre>
+          </div>
+        </div>
+      </section>
+      <section id="events">
+        <h2>Événements</h2>
+
+        <div class="exercise">
+          <h3>Exercice 1 - Événement de clic (Débutant)</h3>
+          <p>
+            <strong>Consigne :</strong> Créez un bouton qui change de couleur
+            quand on clique dessus.
+          </p>
+          <button class="toggle-solution" data-target="solution-event-1">
+            Voir la correction
+          </button>
+          <div class="solution" id="solution-event-1">
+            <pre><code>// Correction de l'exercice 1 - Événement de clic
+// HTML: &lt;button id="monBouton"&gt;Cliquez-moi!&lt;/button&gt;
+
+const bouton = document.getElementById('monBouton');
+const couleurs = ['red', 'blue', 'green', 'orange', 'purple'];
+let indexCouleur = 0;
+
+bouton.addEventListener('click', function() {
+    this.style.backgroundColor = couleurs[indexCouleur];
+    indexCouleur = (indexCouleur + 1) % couleurs.length;
+});
+
+// Alternative avec arrow function
+bouton.addEventListener('click', () => {
+    bouton.style.backgroundColor = couleurs[indexCouleur];
+    indexCouleur = (indexCouleur + 1) % couleurs.length;
+});</code></pre>
+          </div>
+        </div>
+
+        <div class="exercise">
+          <h3>Exercice 2 - Événements de formulaire (Intermédiaire)</h3>
+          <p>
+            <strong>Consigne :</strong> Créez un formulaire de contact avec
+            validation en temps réel sur les champs.
+          </p>
+          <button class="toggle-solution" data-target="solution-event-2">
+            Voir la correction
+          </button>
+          <div class="solution" id="solution-event-2">
+            <pre><code>// Correction de l'exercice 2 - Événements de formulaire
+// HTML nécessaire:
+// &lt;form id="contactForm"&gt;
+//   &lt;input type="email" id="email" placeholder="Email"&gt;
+//   &lt;input type="tel" id="telephone" placeholder="Téléphone"&gt;
+//   &lt;button type="submit"&gt;Envoyer&lt;/button&gt;
+// &lt;/form&gt;
+
+const form = document.getElementById('contactForm');
+const emailInput = document.getElementById('email');
+const telephoneInput = document.getElementById('telephone');
+
+function validerEmail(email) {
+    const regex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    return regex.test(email);
+}
+
+function validerTelephone(tel) {
+    const regex = /^[0-9]{10}$/;
+    return regex.test(tel.replace(/\s/g, ''));
+}
+
+emailInput.addEventListener('input', function() {
+    if (validerEmail(this.value)) {
+        this.style.borderColor = 'green';
+    } else {
+        this.style.borderColor = 'red';
+    }
+});
+
+telephoneInput.addEventListener('input', function() {
+    if (validerTelephone(this.value)) {
+        this.style.borderColor = 'green';
+    } else {
+        this.style.borderColor = 'red';
+    }
+});
+
+form.addEventListener('submit', function(e) {
+    e.preventDefault();
+    if (validerEmail(emailInput.value) && validerTelephone(telephoneInput.value)) {
+        alert('Formulaire valide!');
+    } else {
+        alert('Veuillez corriger les erreurs.');
+    }
+});</code></pre>
+          </div>
+        </div>
+
+        <div class="exercise">
+          <h3>Exercice 3 - Événements personnalisés (Avancé)</h3>
+          <p>
+            <strong>Consigne :</strong> Créez un système d'événements
+            personnalisés pour un panier d'achat.
+          </p>
+          <button class="toggle-solution" data-target="solution-event-3">
+            Voir la correction
+          </button>
+          <div class="solution" id="solution-event-3">
+            <pre><code>// Correction de l'exercice 3 - Événements personnalisés
+class PanierAchat extends EventTarget {
+    constructor() {
+        super();
+        this.items = [];
+        this.total = 0;
+    }
+    
+    ajouterItem(produit, prix) {
+        this.items.push({ produit, prix });
+        this.total += prix;
+        
+        // Déclencher un événement personnalisé
+        this.dispatchEvent(new CustomEvent('itemAjoute', {
+            detail: { produit, prix, total: this.total }
+        }));
+    }
+    
+    supprimerItem(index) {
+        if (this.items[index]) {
+            const itemSupprime = this.items.splice(index, 1)[0];
+            this.total -= itemSupprime.prix;
+            
+            this.dispatchEvent(new CustomEvent('itemSupprime', {
+                detail: { produit: itemSupprime.produit, total: this.total }
+            }));
+        }
+    }
+    
+    vider() {
+        this.items = [];
+        this.total = 0;
+        this.dispatchEvent(new CustomEvent('panierVide'));
+    }
+}
+
+// Utilisation
+const panier = new PanierAchat();
+
+panier.addEventListener('itemAjoute', (e) => {
+    console.log(`Produit ajouté: ${e.detail.produit} - Total: ${e.detail.total}€`);
+});
+
+panier.addEventListener('itemSupprime', (e) => {
+    console.log(`Produit supprimé: ${e.detail.produit} - Total: ${e.detail.total}€`);
+});
+
+panier.addEventListener('panierVide', () => {
+    console.log('Panier vidé!');
+});
+
+// Tests
+panier.ajouterItem('Livre', 15);
+panier.ajouterItem('Stylo', 2);
+panier.supprimerItem(0);</code></pre>
+          </div>
+        </div>
+      </section>
+
+      <section id="dom">
+        <h2>Manipulation du DOM</h2>
+
+        <div class="exercise">
+          <h3>Exercice 1 - Sélection et modification (Débutant)</h3>
+          <p>
+            <strong>Consigne :</strong> Sélectionnez un élément par son ID et
+            modifiez son contenu et son style.
+          </p>
+          <button class="toggle-solution" data-target="solution-dom-1">
+            Voir la correction
+          </button>
+          <div class="solution" id="solution-dom-1">
+            <pre><code>// Correction de l'exercice 1 - Manipulation de base
+// HTML: &lt;div id="monDiv"&gt;Texte original&lt;/div&gt;
+
+const element = document.getElementById('monDiv');
+
+// Modifier le contenu
+element.textContent = 'Nouveau texte!';
+
+// Modifier le style
+element.style.color = 'blue';
+element.style.fontSize = '20px';
+element.style.border = '2px solid red';
+
+// Ajouter une classe CSS
+element.classList.add('highlight');
+
+// Alternative avec innerHTML (attention au XSS)
+element.innerHTML = '&lt;strong&gt;Texte en gras&lt;/strong&gt;';
+
+// Modifier plusieurs styles en une fois
+Object.assign(element.style, {
+    backgroundColor: 'yellow',
+    padding: '10px',
+    borderRadius: '5px'
+});</code></pre>
+          </div>
+        </div>
+
+        <div class="exercise">
+          <h3>Exercice 2 - Création dynamique d'éléments (Intermédiaire)</h3>
+          <p>
+            <strong>Consigne :</strong> Créez dynamiquement une liste à partir
+            d'un tableau de données.
+          </p>
+          <button class="toggle-solution" data-target="solution-dom-2">
+            Voir la correction
+          </button>
+          <div class="solution" id="solution-dom-2">
+            <pre><code>// Correction de l'exercice 2 - Création dynamique
+const donnees = [
+    { nom: 'Alice', age: 25, ville: 'Paris' },
+    { nom: 'Bob', age: 30, ville: 'Lyon' },
+    { nom: 'Charlie', age: 28, ville: 'Marseille' }
+];
+
+function creerListePersonnes(personnes, containerId) {
+    const container = document.getElementById(containerId);
+    
+    // Vider le container
+    container.innerHTML = '';
+    
+    // Créer la liste
+    const ul = document.createElement('ul');
+    ul.className = 'liste-personnes';
+    
+    personnes.forEach((personne, index) => {
+        const li = document.createElement('li');
+        li.className = 'personne-item';
+        
+        li.innerHTML = `
+            &lt;h3&gt;${personne.nom}&lt;/h3&gt;
+            &lt;p&gt;Âge: ${personne.age} ans&lt;/p&gt;
+            &lt;p&gt;Ville: ${personne.ville}&lt;/p&gt;
+            &lt;button onclick="supprimerPersonne(${index})"&gt;Supprimer&lt;/button&gt;
+        `;
+        
+        ul.appendChild(li);
+    });
+    
+    container.appendChild(ul);
+}
+
+function supprimerPersonne(index) {
+    donnees.splice(index, 1);
+    creerListePersonnes(donnees, 'container');
+}
+
+// HTML nécessaire: &lt;div id="container"&gt;&lt;/div&gt;
+creerListePersonnes(donnees, 'container');</code></pre>
+          </div>
+        </div>
+
+        <div class="exercise">
+          <h3>Exercice 3 - Drag and Drop (Avancé)</h3>
+          <p>
+            <strong>Consigne :</strong> Implémentez un système de
+            glisser-déposer pour réorganiser des éléments.
+          </p>
+          <button class="toggle-solution" data-target="solution-dom-3">
+            Voir la correction
+          </button>
+          <div class="solution" id="solution-dom-3">
+            <pre><code>// Correction de l'exercice 3 - Drag and Drop
+class DragDropList {
+    constructor(containerId) {
+        this.container = document.getElementById(containerId);
+        this.draggedElement = null;
+        this.setupEventListeners();
+    }
+    
+    setupEventListeners() {
+        this.container.addEventListener('dragstart', this.handleDragStart.bind(this));
+        this.container.addEventListener('dragover', this.handleDragOver.bind(this));
+        this.container.addEventListener('drop', this.handleDrop.bind(this));
+        this.container.addEventListener('dragend', this.handleDragEnd.bind(this));
+    }
+    
+    handleDragStart(e) {
+        this.draggedElement = e.target;
+        e.target.style.opacity = '0.5';
+        e.dataTransfer.effectAllowed = 'move';
+        e.dataTransfer.setData('text/html', e.target.outerHTML);
+    }
+    
+    handleDragOver(e) {
+        e.preventDefault();
+        e.dataTransfer.dropEffect = 'move';
+        
+        const afterElement = this.getDragAfterElement(e.clientY);
+        if (afterElement == null) {
+            this.container.appendChild(this.draggedElement);
+        } else {
+            this.container.insertBefore(this.draggedElement, afterElement);
+        }
+    }
+    
+    handleDrop(e) {
+        e.preventDefault();
+        if (e.target !== this.draggedElement) {
+            this.updateOrder();
+        }
+    }
+    
+    handleDragEnd(e) {
+        e.target.style.opacity = '';
+        this.draggedElement = null;
+    }
+    
+    getDragAfterElement(y) {
+        const draggableElements = [...this.container.querySelectorAll('.draggable:not(.dragging)')];
+        
+        return draggableElements.reduce((closest, child) => {
+            const box = child.getBoundingClientRect();
+            const offset = y - box.top - box.height / 2;
+            
+            if (offset < 0 && offset > closest.offset) {
+                return { offset: offset, element: child };
+            } else {
+                return closest;
+            }
+        }, { offset: Number.NEGATIVE_INFINITY }).element;
+    }
+    
+    updateOrder() {
+        const items = this.container.querySelectorAll('.draggable');
+        items.forEach((item, index) => {
+            item.dataset.order = index;
+        });
+        console.log('Nouvel ordre:', Array.from(items).map(item => item.textContent));
+    }
+}
+
+// HTML et utilisation:
+// &lt;div id="sortableList"&gt;
+//   &lt;div class="draggable" draggable="true"&gt;Élément 1&lt;/div&gt;
+//   &lt;div class="draggable" draggable="true"&gt;Élément 2&lt;/div&gt;
+//   &lt;div class="draggable" draggable="true"&gt;Élément 3&lt;/div&gt;
+// &lt;/div&gt;
+
+const dragDropList = new DragDropList('sortableList');</code></pre>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <script src="assets/app.js"></script>
+  </body>
+</html>
